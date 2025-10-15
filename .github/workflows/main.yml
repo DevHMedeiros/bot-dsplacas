@@ -1,0 +1,34 @@
+# Arquivo: .github/workflows/main.yml
+
+name: CI - Build and Push Docker Image
+
+on:
+  push:
+    branches: [ "main" ] # Roda a cada push na branch main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write # Permissão para escrever no GHCR
+
+    steps:
+      - name: Checkout do Repositório
+        uses: actions/checkout@v3
+
+      - name: Login no GitHub Container Registry (GHCR)
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }} # Seu usuário ou organização do GitHub
+          password: ${{ secrets.GITHUB_TOKEN }}  # Token gerado automaticamente pelo GitHub
+
+      - name: Build e Push da Imagem Docker
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/meu-projeto:latest
+            ghcr.io/${{ github.repository_owner }}/meu-projeto:${{ github.sha }}
