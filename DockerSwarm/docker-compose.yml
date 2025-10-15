@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  telegram-bot:
+    image: telegram-bot:latest
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: rollback
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: pause
+        order: stop-first
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+      placement:
+        constraints:
+          - node.role == manager
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - API_CONSULTA_TOKEN=${API_CONSULTA_TOKEN}
+      - API_CONSULTA_URL=${API_CONSULTA_URL}
+      - API_BACKUP_1=${API_BACKUP_1}
+      - API_BACKUP_2=${API_BACKUP_2}
+    networks:
+      - telegram-bot-network
+    volumes:
+      - bot-logs:/app/logs
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  telegram-bot-network:
+    driver: overlay
+    attachable: true
+
+volumes:
+  bot-logs:
+    driver: local
