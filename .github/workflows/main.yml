@@ -22,7 +22,7 @@ jobs:
         with:
           registry: ghcr.io
           # CORREÇÃO APLICADA AQUI: Garante que o username seja minúsculo
-          username: ${{ toLower(github.repository_owner) }}
+          username: devhmedeiros
           password: ${{ secrets.GITHUB_TOKEN }}  # Token gerado automaticamente pelo GitHub
 
       - name: Build e Push da Imagem Docker
@@ -32,5 +32,5 @@ jobs:
           push: true
           # CORREÇÃO APLICADA AQUI: Garante que o proprietário na tag seja minúsculo
           tags: |
-            ghcr.io/${{ toLower(github.repository_owner) }}/bot-dsplacas:latest
-            ghcr.io/${{ toLower(github.repository_owner) }}/bot-dsplacas:${{ github.sha }}
+            ghcr.io/devhmedeiros/bot-dsplacas:latest
+            ghcr.io/devhmedeiros/bot-dsplacas:${{ github.sha }}
