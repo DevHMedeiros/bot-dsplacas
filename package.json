@@ -1,0 +1,29 @@
+# Dependências
+node_modules/
+
+# Arquivos de log e sistema
+npm-debug.log*
+.DS_Store
+
+# Arquivos de segredos NUNCA DEVEM IR PARA O GIT
+*.env
+.env.*
+
+
+```:Arquivos a Ignorar no Build Docker:.dockerignore
+# Ignora a pasta de dependências local (o Docker irá instalar a sua)
+node_modules
+
+# Arquivos de log
+npm-debug.log
+
+# Pasta e arquivos do Git
+.git
+.gitignore
+
+# Arquivos de segredos
+.env
+*.env
+
+# Documentação
+README.md
