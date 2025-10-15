@@ -21,7 +21,8 @@ jobs:
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }} # Seu usuário ou organização do GitHub
+          # CORREÇÃO APLICADA AQUI: Garante que o username seja minúsculo
+          username: ${{ toLower(github.repository_owner) }}
           password: ${{ secrets.GITHUB_TOKEN }}  # Token gerado automaticamente pelo GitHub
 
       - name: Build e Push da Imagem Docker
@@ -29,6 +30,7 @@ jobs:
         with:
           context: .
           push: true
+          # CORREÇÃO APLICADA AQUI: Garante que o proprietário na tag seja minúsculo
           tags: |
-            ghcr.io/${{ github.repository_owner }}/meu-projeto:latest
-            ghcr.io/${{ github.repository_owner }}/meu-projeto:${{ github.sha }}
+            ghcr.io/${{ toLower(github.repository_owner) }}/bot-dsplacas:latest
+            ghcr.io/${{ toLower(github.repository_owner) }}/bot-dsplacas:${{ github.sha }}
